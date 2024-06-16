@@ -7,7 +7,7 @@ fun main() {
     val seats = readln().toInt()
     val room = Room(rows = rows, seats = seats)
     println("Total income:")
-    room.getTotalIncome()
-
+    println("$${room.getTotalIncome()}")
 }
 
+fun Int.divR(i: Int): Int = this / i + this % i
