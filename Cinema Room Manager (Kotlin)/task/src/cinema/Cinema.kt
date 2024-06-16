@@ -1,20 +1,35 @@
 package cinema
 
+val room = setup()
+
 fun main() {
-    val room = setup()
+//    val room = setup()
+    val menu = listOf(null, room::print, ::bookSeat)
     println()
-    room.print()
-    println()
-    bookSeat(room)
+    while (true) {
+        printMenu()
+        val userInput = readln().toInt()
+        println()
+        menu[userInput]?.call() ?: break
+        println()
+    }
 }
 
-fun bookSeat(room: Room) {
+fun printMenu() {
+    println(
+        """
+    1. Show the seats
+    2. Buy a ticket
+    0. Exit
+    """.trimIndent()
+    )
+}
+
+fun bookSeat() {
     val seatChoice = askSeat()
     println()
     println("Ticket price: $${room.getSeatPrice(seatChoice.first)}")
     room.bookSeat(seatChoice.first, seatChoice.second)
-    println()
-    room.print()
 }
 
 fun askSeat(): Pair<Int, Int> {
