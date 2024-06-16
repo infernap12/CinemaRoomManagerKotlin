@@ -6,13 +6,14 @@ const val SMALL_ROOM_SIZE = 60
 
 // Class that represents a distinct room in a cinema
 class Room(val rows: Int = 7, val seats: Int = 8) {
-    val map: List<MutableList<Char>> = List(rows) { MutableList(seats) { 'S' } }
+    // 2d list of all the seats in the cinema room
+    val roomSeats: List<MutableList<Char>> = List(rows) { MutableList(seats) { 'S' } }
 
     fun print() {
         println("Cinema:")
         print("  ")
-        println((1..map[0].size).joinToString(" "))
-        map.forEachIndexed { i, list ->
+        println((1..roomSeats[0].size).joinToString(" "))
+        roomSeats.forEachIndexed { i, list ->
             println((i + 1).toString() + " " + list.joinToString(" "))
         }
     }
@@ -23,5 +24,13 @@ class Room(val rows: Int = 7, val seats: Int = 8) {
             rows.div(2) * seats * FRONT_PRICE +
                     rows.divR(2) * seats * BACK_PRICE
         }
+    }
+
+    fun getSeatPrice(row: Int): Int {
+        return if (rows * seats <= SMALL_ROOM_SIZE || row <= this.rows / 2) FRONT_PRICE else BACK_PRICE
+    }
+
+    fun bookSeat(row: Int, seat: Int) {
+        roomSeats[row - 1][seat - 1] = 'B'
     }
 }
