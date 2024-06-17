@@ -4,7 +4,7 @@ val room = setup()
 
 fun main() {
 //    val room = setup()
-    val menu = listOf(null, room::print, ::bookSeat)
+    val menu = listOf(null, room::print, ::bookSeat, ::statistics)
     println()
     while (true) {
         printMenu()
@@ -20,16 +20,29 @@ fun printMenu() {
         """
     1. Show the seats
     2. Buy a ticket
+    3. Statistics
     0. Exit
     """.trimIndent()
     )
 }
 
 fun bookSeat() {
-    val seatChoice = askSeat()
-    println()
-    println("Ticket price: $${room.getSeatPrice(seatChoice.first)}")
-    room.bookSeat(seatChoice.first, seatChoice.second)
+    while (true) {
+        val (row, seat) = askSeat()
+        println()
+        if (row !in 1..room.rows || seat !in 1..room.seats){
+            println("Wrong input!\n")
+            continue
+        }
+
+        if (room.get(row, seat) == 'B') {
+            println("That ticket has already been purchased!")
+            continue
+        }
+        println("Ticket price: $${room.getSeatPrice(row)}")
+        room.bookSeat(row, seat)
+        return
+    }
 }
 
 fun askSeat(): Pair<Int, Int> {
@@ -38,6 +51,17 @@ fun askSeat(): Pair<Int, Int> {
     println("Enter a seat number in that row:")
     val seat = readln().toInt()
     return Pair(row, seat)
+}
+
+fun statistics() {
+    println(
+        """
+        Number of purchased tickets: ${room.purchased}
+        Percentage: ${"%.2f%%".format(room.capacity)}
+        Current income: $${room.getCurrentIncome()}
+        Total income: $${room.getTotalIncome()}
+        """.trimIndent()
+    )
 }
 
 private fun printTotalIncome(room: Room) {
