@@ -30,7 +30,7 @@ fun bookSeat() {
     while (true) {
         val (row, seat) = askSeat()
         println()
-        if (row !in 1..room.rows || seat !in 1..room.seats){
+        if (row !in 1..room.rows || seat !in 1..room.seats) {
             println("Wrong input!\n")
             continue
         }
@@ -62,11 +62,6 @@ fun statistics() {
         Total income: $${room.getTotalIncome()}
         """.trimIndent()
     )
-}
-
-private fun printTotalIncome(room: Room) {
-    println("Total income:")
-    println("$${room.getTotalIncome()}")
 }
 
 fun setup(): Room {
